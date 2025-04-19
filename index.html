@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>StudyFly - Pomodoro Tracker</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="icon" href="logo/logo.png" type="image/png" />
+
+    <script src="https://cdn.jsdelivr.net/npm/progressbar.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <div class="top">
+      <a href="https://github.com/CYCNO/studyfly" target="_blank" style="text-decoration: none; color: inherit;">
+        <h1>Study<span>Fly</span></h1>
+      </a>
+      <button class="customize" onclick="setting()">Customize</button>
+    </div>
+
+    <div class="main-container">
+      <div class="pomodoro">
+        <div id="progress-container"></div>
+        <div class="timer-text">
+          <div id="modeLabel">Study</div>
+          <div id="timer">25:00</div>
+        </div>
+
+        <div class="buttons">
+          <button onclick="startTimer()">Start</button>
+          <button onclick="stopTimer()">Stop</button>
+          <button onclick="resetTimer()">Reset</button>
+        </div>
+      </div>
+
+      <div class="task-list">
+        <input
+          type="text"
+          id="taskInput"
+          placeholder="Add a new task and press Enter..."
+          onkeypress="addTask(event)"
+        />
+        <ul id="tasks"></ul>
+      </div>
+    </div>
+
+    <div class="daily-tracker">
+      <canvas id="dailyChart"></canvas>
+    </div>
+
+    <!-- Customize Modal -->
+    <div id="customizeModal">
+      <div id="modalContent">
+        <h2>Customize Settings</h2>
+
+        <label for="timeInput">Pomodoro Time (minutes):</label>
+        <input type="number" id="timeInput" min="1" value="25" />
+
+        <label for="bgInput">Background Image URL:</label>
+        <input type="text" id="bgInput" placeholder="Enter image URL" />
+
+        <div class="modal-buttons">
+          <button onclick="applySettings()">Apply</button>
+          <button onclick="closeModal()">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
