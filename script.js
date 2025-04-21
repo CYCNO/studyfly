@@ -4,6 +4,19 @@ let isRunning = false;
 let isBreak = false;
 let timerInterval;
 
+if ("Notification" in window) {
+  // Request permission from the user
+  Notification.requestPermission().then((permission) => {
+    if (permission === "granted") {
+      console.log("Notification permission granted.");
+    } else {
+      console.log("Notification permission denied.");
+    }
+  });
+} else {
+  console.log("This browser does not support notifications.");
+}
+
 const bar = new ProgressBar.SemiCircle("#progress-container", {
   strokeWidth: 8,
   color: "#00ff88",
@@ -30,6 +43,19 @@ function updateTimerDisplay() {
   bar.set(seconds / total);
 }
 
+function alert() {
+  Notification.requestPermission().then((permission) => {
+    if (permission === "granted") {
+      // Create and show the notification
+      new Notification("Session Completed", {
+        body: "Your session has ended, you can take a break now.",
+        icon: "logo/logo.png", // Optional: Add an icon
+      });
+    } else {
+      alert("Permission denied. Unable to send notification.");
+    }
+  });
+}
 function startTimer() {
   if (isRunning) return;
   isRunning = true;
@@ -43,7 +69,7 @@ function startTimer() {
 
       if (!isBreak) {
         markTodayComplete();
-        alert("Time for a break!");
+        alert();
         isBreak = true;
         seconds = 300;
       } else {
