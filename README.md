@@ -24,6 +24,7 @@
 ## ✨ Features
 
 - ⏱️ Minimal Pomodoro timer with Start / Stop / Reset  
+- 🎵 Spotify Support
 - ✅ Clean task list with add & complete functionality  
 - 📊 Auto-updating 30-day progress tracker with Chart.js  
 - 🎨 Customize timer length & background image  

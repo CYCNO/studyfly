@@ -3,7 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>StudyFly - Pomodoro Tracker</title>
+    <title>StudyFly - Pomodoro & Task Tracker for Focused Work</title>
+    <meta name="description" content="StudyFly is an open-source Pomodoro timer and task manager designed to help you boost productivity and maintain focus. Contribute on GitHub!" />
+    <meta name="keywords" content="Pomodoro Timer, Study Tracker, Task Manager, Productivity App, Focus Timer, Online Pomodoro, Study Tool, Open Source, GitHub" />
+    <meta name="author" content="CYCNO" />
     <link
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
       rel="stylesheet"
@@ -16,9 +19,7 @@
   </head>
   <body>
     <div class="top">
-      <a href="https://github.com/CYCNO/studyfly" target="_blank" style="text-decoration: none; color: inherit;">
-        <h1>Study<span>Fly</span></h1>
-      </a>
+      <h1>Study<span>Fly</span></h1>
       <button class="customize" onclick="setting()">Customize</button>
     </div>
 
@@ -52,7 +53,20 @@
       <canvas id="dailyChart"></canvas>
     </div>
 
-    <!-- Customize Modal -->
+    <div class="spotifywrapper">
+      <iframe
+        style="border-radius: 12px"
+        src="https://open.spotify.com/track/3L1JHXiqNOJ57w3n2R3HyU"
+        width="100%"
+        height="152"
+        frameBorder="0"
+        allowfullscreen=""
+        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+        loading="lazy"
+        id="spotifyIframe"
+      ></iframe>
+    </div>
+
     <div id="customizeModal">
       <div id="modalContent">
         <h2>Customize Settings</h2>
@@ -62,6 +76,13 @@
 
         <label for="bgInput">Background Image URL:</label>
         <input type="text" id="bgInput" placeholder="Enter image URL" />
+
+        <label for="spotifyUrlInput">Spotify Embed URL:</label>
+        <input
+          type="text"
+          id="spotifyUrlInput"
+          placeholder="Enter Spotify URL"
+        />
 
         <div class="modal-buttons">
           <button onclick="applySettings()">Apply</button>

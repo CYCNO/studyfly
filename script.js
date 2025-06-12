@@ -115,8 +115,8 @@ function removeTask(el) {
 }
 
 function saveTasks() {
-  const tasks = Array.from(document.querySelectorAll("#tasks li")).map((li) =>
-    li.firstChild.textContent.trim()
+  const tasks = Array.from(document.querySelectorAll("#tasks li")).map(
+    (li) => li.firstChild.textContent.trim()
   );
   localStorage.setItem("studyflyTasks", JSON.stringify(tasks));
 }
@@ -213,6 +213,9 @@ function setting() {
   document.getElementById("timeInput").value = fullTime / 60;
   document.getElementById("bgInput").value =
     localStorage.getItem("studyflyBg") || "";
+  // Load existing Spotify URL into the input field
+  document.getElementById("spotifyUrlInput").value =
+    localStorage.getItem("spotifyEmbedUrl") || "";
 }
 
 function closeModal() {
@@ -222,6 +225,7 @@ function closeModal() {
 function applySettings() {
   const time = parseInt(document.getElementById("timeInput").value);
   const bgUrl = document.getElementById("bgInput").value.trim();
+  let spotifyUrl = document.getElementById("spotifyUrlInput").value.trim();
 
   if (!isNaN(time) && time > 0) {
     localStorage.setItem("studyflyTime", time);
@@ -233,6 +237,54 @@ function applySettings() {
   if (bgUrl !== "") {
     document.body.style.backgroundImage = `url("${bgUrl}")`;
     localStorage.setItem("studyflyBg", bgUrl);
+  } else {
+    document.body.style.backgroundImage = ""; // Clear if empty
+    localStorage.removeItem("studyflyBg");
+  }
+
+  // Process Spotify URL
+  if (spotifyUrl !== "") {
+    // Ensure it's an embed URL
+    if (spotifyUrl.includes("spotify.com/track/")) {
+      spotifyUrl = spotifyUrl.replace(
+        "spotify.com/track/",
+        "spotify.com/embed/track/"
+      );
+    } else if (spotifyUrl.includes("spotify.com/playlist/")) {
+      spotifyUrl = spotifyUrl.replace(
+        "spotify.com/playlist/",
+        "spotify.com/embed/playlist/"
+      );
+    } else if (spotifyUrl.includes("spotify.com/album/")) {
+      spotifyUrl = spotifyUrl.replace(
+        "spotify.com/album/",
+        "spotify.com/embed/album/"
+      );
+    }
+    // Add a default if it's just a general spotify.com URL without /embed/
+    else if (spotifyUrl.includes("spotify.com/") && !spotifyUrl.includes("/embed/")) {
+      // This case handles URLs like spotify.com/user/xyz or just spotify.com,
+      // which might not directly map to an embed.
+      // For a robust solution, you might want to guide the user to input
+      // a track, playlist, or album URL specifically.
+      // For now, if it's just spotify.com and no embed path, we'll try to convert.
+      // This is a bit of a guess, as Spotify's embed URLs are quite specific.
+      // A better approach would be to check for common Spotify URL patterns.
+      if (!spotifyUrl.includes("/embed/")) {
+        const parts = spotifyUrl.split("/");
+        if (parts.length >= 5) { // e.g., https://open.spotify.com/track/xyz
+          const type = parts[3]; // 'track', 'playlist', 'album'
+          const id = parts[4].split("?")[0];
+          spotifyUrl = `https://open.spotify.com/embed/${type}/${id}`;
+        }
+      }
+    }
+    
+    document.getElementById("spotifyIframe").src = spotifyUrl;
+    localStorage.setItem("spotifyEmbedUrl", spotifyUrl);
+  } else {
+    document.getElementById("spotifyIframe").src = ""; // Clear iframe if input is empty
+    localStorage.removeItem("spotifyEmbedUrl");
   }
 
   closeModal();
@@ -248,6 +300,11 @@ function applySettings() {
   const savedBg = localStorage.getItem("studyflyBg");
   if (savedBg) {
     document.body.style.backgroundImage = `url("${savedBg}")`;
+  }
+
+  const savedSpotifyEmbedUrl = localStorage.getItem("spotifyEmbedUrl");
+  if (savedSpotifyEmbedUrl) {
+    document.getElementById("spotifyIframe").src = savedSpotifyEmbedUrl;
   }
 })();
 
